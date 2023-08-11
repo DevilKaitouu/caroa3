@@ -39,6 +39,7 @@
         const cells = document.querySelectorAll('.cell');
         let currentPlayer = 'X';
         let gameOver = false;
+        let movesMade = 0;
 
         cells.forEach(cell => {
             cell.addEventListener('click', () => makeMove(cell));
@@ -47,15 +48,21 @@
         function makeMove(cell) {
             if (!cell.textContent && !gameOver) {
                 cell.textContent = currentPlayer;
+                movesMade++;
+
                 if (checkWin()) {
                     gameOver = true;
                     alert(`${currentPlayer} thắng!`);
                     resetBoard();
-                    return;
-                }
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                if (currentPlayer === 'O') {
-                    setTimeout(makeBotMove, 500);
+                } else if (movesMade === 9) {
+                    gameOver = true;
+                    alert('Hòa!');
+                    resetBoard();
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                    if (currentPlayer === 'O') {
+                        setTimeout(makeBotMove, 500);
+                    }
                 }
             }
         }
@@ -89,8 +96,8 @@
             });
             currentPlayer = 'X';
             gameOver = false;
+            movesMade = 0;
         }
     </script>
-    <p>Người chơi là người thắng</p>
 </body>
 </html>
